@@ -1,0 +1,18 @@
+.login-container{
+    display: flex;
+    background-color: aqua;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.login_box{
+    background-color: aliceblue;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    border: solid;
+    padding-top: 25px;
+    
+}

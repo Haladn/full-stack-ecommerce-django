@@ -1,0 +1,290 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'shop/mynav.html' %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+<script>
+    // getting csrf_token to use it in ajax requests
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    // Retrieve the CSRF token
+    const csrftoken = getCookie('csrftoken');
+</script>
+
+
+{% if request.user.is_authenticated %}
+    
+    {% if customer_products %}  
+        <div id="auth-cart" class="cart-container">  
+            <div class="subtotal-container">
+                <p>Subtotal: (<span id="subtotal-auth">{{subtotal}}</span>) Products</p>
+                <p>Total Price:  £<span id="subtotal-price-auth">{{total_price|floatformat:"2g"}}</span></p>
+                <form method="POST" action="">
+                    {% csrf_token %} 
+                    <button name="button" value="subtotal">Proceed to checkout</button>
+                </form>
+
+            </div>
+            {% for customer_product in customer_products %}
+                <div class="inner-cart" id="inner-cart-{{customer_product.laptop.id}}">
+                    <div class="image">
+                        <img src="{{customer_product.laptop.image}}">
+                    </div>
+                    <div class="cart-body">
+                        <p>{{customer_product.laptop.category}}</p>
+                        
+                        <p>{{customer_product.laptop.description|lower|title|truncatewords:20}}</p>
+                            
+                        
+                        <p>price: £{{customer_product.price}}</p>
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            <input type="number" name="product_id" value={{customer_product.laptop.id}} hidden>
+                            
+                            <p>Quantity:
+                                <select name="product_quantity" class="update_select" data-object_id="{{customer_product.laptop.id}}" data-product_incart_quantity="{{customer_product.quantity}}" data-product_instore_quantity="{{customer_product.laptop.quantity}}" >
+                                </select>
+                            </p> 
+                            
+                            <button class="checkout-button" name="button" value="checkout" type="submit">Buy now</button>
+                            <button class="form-button" name="button" value="remove" type="submit">Remove</button>
+                            
+                        </form>   
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="no-product" class="cart-container" style="display: none;">
+            <div class="subtotal-container">
+                <h6>There is no item in your Cart</h6>
+            </div>
+        </div>
+    {% else %}
+            <div class="cart-container">
+                <div class="subtotal-container">
+                    <h6>There is no item in your Cart</h6>
+                </div>
+            </div>
+    {% endif %}
+    
+
+    <script>
+        //handling select element and ajax requests for authenticated user
+        const selectElements=document.querySelectorAll('.update_select');
+    
+        //iterating through each element and do some operatins
+        selectElements.forEach(function(selectTag){
+            const inCartQuantity=parseInt(selectTag.getAttribute('data-product_incart_quantity'));
+            const inStoreQuantity=parseInt(selectTag.getAttribute('data-product_instore_quantity'));
+            const objectId=selectTag.getAttribute('data-object_id');
+            const totalQuantity=inCartQuantity + inStoreQuantity;
+            
+    
+            // Create and append options to the select element
+            for (let i=0; i <=totalQuantity; i++){
+                const option=document.createElement('option');
+                option.value=i;
+                option.text=i;
+    
+                if (i === inCartQuantity){
+                    option.selected=true;
+                }
+    
+                selectTag.appendChild(option)
+            };
+    
+            //adding eventListener to our elemet
+            selectTag.addEventListener('change',function(){
+                const newQuantity=parseInt(selectTag.value);
+                const data={
+                    'new_quantity':newQuantity,
+                    'total_quantity':totalQuantity,
+                    'object_id':objectId,
+                }
+                url = "{% url 'update_quantity' %}"
+                fetch(url,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'aplication/json',
+                        'X-CSRFToken':csrftoken,
+                    },
+                    body:JSON.stringify(data),
+                })
+                .then(response=>response.json())
+                .then(newData=>{
+                    let subtotalAuth=document.getElementById('subtotal-auth');
+                    let totalPriceAuth=document.getElementById('subtotal-price-auth');
+                    let noProduct = document.getElementById('no-product');
+                    let authCart = document.getElementById('auth-cart');
+                    let element=document.getElementById("inner-cart-" + objectId);
+                    let cartElements = document.getElementById('cart-count');
+
+                    //update element's number in cart
+                    cartElements.innerHTML = newData.subtotal;
+
+                    //handling the response accordingly
+                    if (newData.subtotal > 0 && newData.new_quantity > 0){
+                        
+                        subtotalAuth.innerHTML = newData.subtotal;
+                        totalPriceAuth.innerHTML = newData.total_price.toFixed(2);
+                    }else if(newData.subtotal > 0 && newData.new_quantity === 0){
+                        subtotalAuth.innerHTML = newData.subtotal;
+                        totalPriceAuth.innerHTML = newData.total_price.toFixed(2);
+                        element.remove();
+                    }else{
+                        authCart.remove();
+                        noProduct.style.display="block";
+                    }
+                })
+            })
+        });
+    </script>
+
+
+{% else %}
+
+    {% if unauth_user_cart %}
+        <div id="cart1" class="cart-container"> 
+            <div class="subtotal-container">
+                <p>Subtotal: (<span id="subtotal">{{subtotal}}</span>) Products</p>
+                <p>Total Price:  £<span id="subtotal-price">{{total_price|floatformat:"2g"}}</span></p>
+                <form method="POST" action="">
+                    {% csrf_token %} 
+                    <button type="submit" name="button" value="subtotal">Proceed to checkout</button>
+                </form>
+            </div>
+            {% for product,object in all_products %}
+                <div class="inner-cart" id="inner-cart-{{product.id}}">
+                    <div class="image">
+                        <img src="{{product.image}}">
+                    </div>
+                    <div class="cart-body">
+                        <p>{{product.category}}</p>
+                        
+                        <p>{{product.description|lower|title|truncatewords:20}}</p>
+    
+                        <p>price: £{{product.price}}</p>
+                        <form id="form1-{{product.id}}" method="POST" action="">
+                            {% csrf_token %}
+                            <input type="number" name="product_id" value={{product.id}} hidden>
+                            
+                            <p>Quantity:
+                                <select name="product_quantity" class="unauth_update_select" data-object_id="{{product.id}}" data-instore_quantity="{{product.quantity}}" data-incart_quantity="{{object.1}}">
+                                </select>
+                            </p> 
+
+                            <button class="checkout-button" name="button" value="checkout" type="submit">Buy now</button>
+                            <button class="form-button" name="button" value="remove" type="submit">Remove</button>
+                            
+                        </form>    
+                    </div>
+                </div>
+            {% endfor %}
+        </div> 
+        
+        <div id="cart2" class="cart-container cart2" style="display: none;">
+            <div class="subtotal-container">
+                <h6>There is no item in your Cart</h6>
+            </div>
+        </div>
+    {% else %}
+        <div class="cart-container cart2">
+            <div class="subtotal-container">
+                <h6>There is no item in your Cart</h6>
+            </div>
+        </div>
+    {% endif %}
+  
+<script>
+    //unauthenticated user
+    const unAuthSelect=document.querySelectorAll('.unauth_update_select');
+    unAuthSelect.forEach(function(unAuthTag){
+        let objectId = unAuthTag.getAttribute('data-object_id');
+        let inStoreQuantity = parseInt(unAuthTag.getAttribute('data-instore_quantity'));
+        let inCartQuantity = parseInt(unAuthTag.getAttribute('data-incart_quantity'));
+        
+        // Create and append options to the select element
+        for (let i=0;i<=inStoreQuantity;i++){
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+
+            if (i === inCartQuantity){
+                option.selected=true;
+            }
+
+            unAuthTag.appendChild(option)
+
+        };
+
+        unAuthTag.addEventListener('change',function(){
+            let quantity=parseInt(unAuthTag.value);
+            data={
+                'quantity':quantity,
+                'objectId':objectId,
+            }
+            console.log(data);
+
+            let url="{% url 'update_quantity' %}"
+            fetch(url,{
+                method:'POST',
+                headers:{
+                    "Content-Type":'application/json',
+                    'X-CSRFToken':csrftoken,
+                    'fetch':'yes',
+                },
+                body:JSON.stringify(data),
+            })
+            .then(response=>response.json())
+            .then(newData =>{
+                const cartElement = document.getElementById('cart-count').innerHTML=newData.products_in_cart;
+                const subtotal = document.getElementById('subtotal').innerHTML=newData.products_in_cart;
+                const price = document.getElementById('subtotal-price').innerHTML=newData.total_price.toFixed(2);
+                
+                if(newData.quantity > 0 && newData.products_in_cart > 0){
+                    cartElement.innerHTML=newData.products_in_cart;
+                    subtotal.innerHTML=newData.products_in_cart;
+                    price.innerHTML=newData.total_price.toFixed(2);
+                }else if(newData.quantity === 0 && newData.products_in_cart > 0){
+                    cartElement.innerHTML=newData.products_in_cart;
+                    subtotal.innerHTML=newData.products_in_cart;
+                    price.innerHTML=newData.total_price.toFixed(2);
+
+                    document.getElementById("inner-cart-"+newData.product_id).remove()
+                }else{
+                    cartElement.innerHTML=0;
+                    
+                    const cart1 = document.getElementById('cart1').remove();
+                    const cart2 = document.getElementById('cart2').style.display = "block";
+ 
+                }
+            })
+            
+
+            
+        }); 
+
+    });
+</script>
+    
+{% endif %}
+
+ 
+{% endblock %}

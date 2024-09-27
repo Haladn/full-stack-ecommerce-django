@@ -1,0 +1,132 @@
+.address_container{
+    display: flex;
+    background-color: aliceblue;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    padding: 15px;
+    padding-left: 60px;
+    padding-right: 60px;
+    border-radius: 5px;
+
+}
+.address-form{
+    text-align: left;
+}
+
+.address-form div {
+    margin-bottom: 10px;
+}
+.address-form div p {
+    margin-bottom: 0;
+}
+
+.error-message {
+    font-size: small;
+    color: red;
+}
+
+.ad-button{
+    background-color: orange;
+    width: 100px;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 30px;
+    margin:0 auto;
+    
+}
+
+.ad-button1{
+    background-color: orange;
+    width: 100px;
+    border-radius: 5px;
+    font-size: 16px;
+    height: 30px;
+    margin:0 auto;
+    display: block;
+    
+}
+
+
+button:hover{
+    color: white;
+}
+
+.address-confirm{
+
+    background-color: antiquewhite;
+    border: solid;
+    border-width: 0.001px;
+    border-radius:5px;
+    max-width: 400px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 15px;
+
+}
+
+.ad-message p{
+    color: red;
+}
+
+.ad-form-error{
+    color: red;
+    margin-left:0;
+    font-size:medium;
+}
+
+.change-button{
+    background-color: red;
+    margin-right: 100px;
+}
+
+form p input{
+    width: 300px;
+}
+
+.phone-number select{
+    border: none;
+    width: 100px;
+    border-right:3px solid aqua;
+    outline: none;
+}
+.phone-number input{
+    width: 200px;
+    border: none;
+    outline: none;
+}
+
+.phone-number {
+    border: solid;
+    border-width: 0.01px;
+}
+
+.phone-number:focus-within{
+    outline:1px solid;
+}
+
+#country select{
+    width: 300px;
+}
+
+#invalid-message{
+    color: red;
+}
+
+/* #update-profile-pic{
+    width: 350px;
+    border: 0.01px solid black;
+} */
+
+.profile-update-pic{
+    border: solid;
+    border-width: 0.01px;
+    padding: 2px;
+    width: 400px;
+    margin-left: 0;
+    
+}

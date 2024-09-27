@@ -1,0 +1,8 @@
+
+<p style="font-size: 15px;">Quantity:
+    <select name="object_quantity">
+        {% for quantity in numbers %}    
+            <option value="{{quantity}}" {% if quantity == 1 %} selected {% endif %}>{{quantity}}</option>
+        {% endfor %}
+    </select>
+</p>

@@ -1,0 +1,60 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content  %}
+{% include 'shop/mynav.html' %}
+
+
+<link rel="stylesheet" href="{% static 'css/address.css' %}">
+<link rel="stylesheet" href="{% static 'css/update_product.css' %}">
+
+<div class="address_container">
+    <div class="address-form"> 
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                <label>*Username</label> 
+                <P>{{form.username}}</P>
+                {% if form.username.errors %} 
+                {% for error in form.username.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+                {% endif %}
+            </div>
+           
+            <div>
+            <label>*Email Address</label>
+            <p id="country">{{form.email}}</p> 
+            {% if form.email.errors %} 
+                {% for error in form.email.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+
+            <div>
+                <label>*Password</label>
+                <p id="country">{{form.password1}}</p> 
+                {% if form.password1.errors %} 
+                    {% for error in form.password1.errors %}
+                        <i class="error-message">*{{error}}</i>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <div>
+                <label>*Password Confirmation</label>
+                <p id="country">{{form.password2}}</p> 
+                {% if form.password2.errors %} 
+                    {% for error in form.password2.errors %}
+                        <i class="error-message">*{{error}}</i>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <input class="admin-button save-btn" name="button" type="submit" value="save">
+        </form>
+        
+    </div> 
+</div>
+{% endblock %}

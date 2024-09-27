@@ -1,0 +1,108 @@
+.subtotal-container{
+    background-color: aliceblue;
+    width: 500px;
+    border-radius: 5px;
+    padding: 10px;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:50px ;
+    text-align: center;
+}
+.subtotal-container form button{
+    background-color: orange;
+    border-width: 0.01px;
+    border-radius: 5px;
+}
+.subtotal-container form button:hover{
+    cursor: pointer;
+    color: white;
+}
+
+.cart-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    row-gap: 20px;
+}
+
+.inner-cart{
+    display: flex;
+    background-color: aliceblue;
+    max-width: 500px;
+    border-radius: 5px;
+    padding: 5px;
+    padding: 5px;
+
+}
+img{
+    border-width: 0.001;
+    width: 250px;
+    height: 200px;
+    border-radius: 5px;
+}
+
+.cart-body{
+    text-align: left;
+}
+
+.cart-body p{
+    font-size: 15px;
+}
+
+.htmx_update_quantity select{
+  background-color: aqua;
+  font-size: 12px;
+  width: 45px;
+  border-radius: 5px;
+}
+
+.form-button{
+    font-size: 12px;
+    border-radius: 5px;
+    background-color:red;
+    color: black;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100px;
+}
+
+.form-button:hover{
+    cursor: pointer;
+    color: white;
+}
+
+
+.checkout-button{
+    font-size: 12px;
+    border-radius: 5px;
+    background-color:orange;
+    color: black;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100px;
+}
+
+
+.checkout-button:hover{
+    color: white;
+    cursor: pointer;
+}
+
+#stock{
+    color: red;
+}
+
+.cart-body p{
+    font-size: 12px;
+}
+
+.cart-update{
+    border-width: 0.01px;
+    border-radius: 1px;
+}

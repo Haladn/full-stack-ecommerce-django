@@ -1,0 +1,75 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content  %}
+{% include 'shop/mynav.html' %}
+
+
+<link rel="stylesheet" href="{% static 'css/address.css' %}">
+<link rel="stylesheet" href="{% static 'css/update_product.css' %}">
+
+<div class="address_container">
+    <div class="address-form"> 
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <label>*Profile Picture</label>
+                <div class="profile-update-pic"> 
+                    <span>{{form1.profile_pic}}</span>
+                    {% if form1.profile_pic.errors %} 
+                    {% for error in form1.profile_pic.errors %}
+                        <i class="error-message">*{{error}}</i>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div>
+                <label>*Username</label> 
+                <P>{{form.username}}</P>
+                {% if form.username.errors %} 
+                {% for error in form.username.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div>
+            <label>First name</label> 
+            <P>{{form.first_name}}</P>
+            {% if form.first_name.errors %} 
+            {% for error in form.first_name.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+            {% endif %}
+            </div>
+
+            <div>
+            <label>Last name</label>
+            <p>{{form.last_name}}</p> 
+            {% if form.last_name.errors %} 
+                {% for error in form.last_name.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+           
+            <div>
+            <label>*Email Address</label>
+            <p id="country">{{form.email}}</p> 
+            {% if form.email.errors %} 
+                {% for error in form.email.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+
+            <input class="admin-button save-btn" name="button" type="submit" value="save">
+            {% if customer %}
+            <input class="admin-button del-btn" name="button" type="submit" value="delete" >
+            {% endif %}
+        </form>
+        
+    </div> 
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'css/ordered.css' %}">
+
+<div class="order-container">
+    
+
+        <div>
+            <p>Total Order: {{total_order}}</p>
+            <p>Delivered Order: {{delivered_order}}</p>
+            <p>On way to Delivery Order: {{on_way_order}}</p>
+            <p>Pendding Order: {{pendding_order}}</p>
+        </div>
+
+        <a href="{% url 'update_order' %}">Add an Order</a>
+
+        {% if orders %}
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>N.</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{order.laptop.description|truncatewords:3}}</td>
+                        <td>{{order.quantity}}</td>
+                        <td>£ {{order.total_price|floatformat:"g"}}</td>
+                        <td>{{order.date_created}}</td>
+                        <td>{{order.status}}</td>
+                        <td><a role="button" href="{% url 'update_order_params' pk=order.id %}">Update</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <br>
+        <h6>No Order Yet.</h6>
+    {% endif %}
+</div>

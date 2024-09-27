@@ -1,0 +1,23 @@
+
+.order-table{
+    border: 1px solid black;
+    min-width:800px;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 15px;
+    margin-bottom: 20px;
+}
+.order-table,.order-table th, .order-table td{
+    border: 1px solid black;
+}
+
+@media screen and (max-width: 950px){
+    .order-table{
+        width: 700px;
+    }
+
+    .order-table th, .order-table td{
+        font-size: medium;
+    }    
+}

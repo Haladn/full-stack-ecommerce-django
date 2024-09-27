@@ -1,0 +1,68 @@
+
+{% load static %}
+{% block mynav %}
+
+<link rel="stylesheet" href="{% static 'css/mynav.css' %}">
+<script src="https://kit.fontawesome.com/06211be5ed.js" crossorigin="anonymous"></script>
+
+
+
+
+<div class="mynav-container">
+    <div class="mynav-first">
+        <div class="my-logo"><img src="{% static 'images/logo.png' %}"><span>e-Shop</span></div>
+        <div class="mynav-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </div>
+    
+
+
+    <nav class="mynav-items-left">
+        {% if request.user.is_superuser %}
+            <div><a type="link" href="{% url 'admin' %}">Admin</a></div>
+        {% endif %}
+        <div><a type="link" href="{% url 'shop' %}">Shop</a></div>
+        <div><a type="link" href="{% url 'about' %}">About</a></div>
+    </nav>
+    <nav class="mynav-form">
+    
+        <form class="search-form " method="GET" action="{% url 'shop' %}">
+            {{filtered_products.form.description}}
+            <button type="submit" value="Search"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
+        </form>
+
+    </nav>
+    <nav class="mynav-items-right">
+
+        <div><a class="mycart" type="link" href="{% url 'cart' %}"><i class="fa-solid fa-cart-plus fa-xl" >
+            <span id="cart-count">{{number_of_product}}</span></i>
+        </a></div>
+
+
+       
+        {% if request.user.is_authenticated or request.user.is_staff %}
+            <div class="mylogin"><a type="link" href="{% url 'profile' %}">Profile</a></div>
+        {% endif %}
+        
+
+
+        {% if request.user.is_authenticated or request.user.is_staff %}
+        <div class="mylogin"><a type="link" href="{% url 'logout' %}">Log out</a></div>
+        <div><a class="user" type="link" href="{% url 'profile' %}"><span>Hello,&nbsp;{{request.user}}</span></a></div>
+        {% else %}
+        <div class="mylogin"><a type="link" href="{% url 'login' %}">Log in</a></div>
+        {% endif %}
+        
+
+    </nav>
+
+
+
+</div>
+
+<!-- we have to keep this js script in the button because it has to be called when the top code is rendered  -->
+<script src="{% static 'js/mynav.js' %}"></script>
+
+{% endblock %}
+        

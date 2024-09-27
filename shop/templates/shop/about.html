@@ -1,0 +1,14 @@
+{% extends 'shop/index.html' %}
+
+{% load static %}
+
+{% block content %}
+{% include 'shop/mynav.html' %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+
+<div class="about-lorem">
+<h6>About</h6>
+<p>{% lorem 1 p%}</p>
+</div>
+
+{% endblock %}

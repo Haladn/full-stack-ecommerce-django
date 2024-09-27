@@ -1,0 +1,51 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% load socialaccount %}
+
+{% block content %}
+
+{% include 'shop/mynav.html' %}
+<link rel="stylesheet"  href="{% static 'css/login.css' %}">
+
+
+
+<div class="login-container">
+    <div class="login_box">
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            <p>Username: <input type="text" name="username" placeholder="Username..." > </p> 
+            <p>Password: <input type="password" name="password" placeholder="Password..."></p><br>
+
+            <button type="submit" class="btn btn-dark" >Login</button>
+
+        </form>
+        <br>
+       
+        <div style="color: red;">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div >
+            <p>Forgot your password?&nbsp; <a type="link" href="{% url 'reset_password' %}">Reset</a></p>
+        </div>
+        <div>
+            <p>Don't have an account? <a type="link" href="{% url 'register' %}">Sign up</a></p>
+        </div>
+
+        <a href="{% provider_login_url "google" %}">Sign in with Google </a>
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock %}

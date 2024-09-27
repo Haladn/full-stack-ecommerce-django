@@ -1,0 +1,17 @@
+.register{
+    display: flex;
+    background-color: aqua;
+    justify-content: center;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.inner_con{
+    background-color:aliceblue;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    
+}

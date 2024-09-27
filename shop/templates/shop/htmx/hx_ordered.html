@@ -1,0 +1,36 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/ordered.css' %}">
+
+<div>
+    {% if orders %}
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>N.</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{order.laptop.description|truncatewords:3}}</td>
+                        <td>{{order.quantity}}</td>
+                        <td>£ {{order.total_price|floatformat:"g"}}</td>
+                        <td>{{order.date_created}}</td>
+                        <td>{{order.status}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <h4>No Order Yet.</h4>
+    {% endif %}
+</div>
+
+

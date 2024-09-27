@@ -1,0 +1,40 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content %}
+
+{% include 'shop/mynav.html' %}
+
+
+
+<link rel="stylesheet" href="{% static 'css/shop.css' %}">
+<script src="{% static 'js/mess_flash.js' %}" ></script>
+
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="add_to_cart">
+        <i class="fa-sharp fa-regular fa-circle-check fa-lg" style="color: #f4f4f4;"></i><span>{{message}}</span>
+    </div>
+    {% endfor %}
+{% endif %}
+
+
+<!-- getting filtered_products variable from mynav context_processor -->
+<div class="shop-container">
+    {% for product in filtered_products.qs %}
+        <div class="product-container">
+            <div>
+                <a class="shop-link" href="{% url 'product_detail' product.id %}"><img src="{{ product.image}}"></a>
+            </div>
+            <div class="shop-content">
+                <a class="shop-link" href="{% url 'product_detail' product.id %}"><p>{{product.description|truncatewords:20}}</p></a>
+                <h6>£{{product.price}}</h6>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

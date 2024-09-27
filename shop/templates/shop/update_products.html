@@ -1,0 +1,143 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content  %}
+{% include 'shop/mynav.html' %}
+
+<link rel="stylesheet" href="{% static 'css/update_product.css' %}">
+<link rel="stylesheet" href="{% static 'css/address.css' %}">
+
+
+<div class="address_container">
+<div class="address-form"> 
+    <form id="form-update" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div>
+        <label>*Category</label> 
+        <P>{{form.category}}</P>
+        {% if form.category.errors %} 
+        {% for error in form.category.errors %}
+            <i class="error-message">*{{error}}</i>
+        {% endfor %}
+        {% endif %}
+        </div>
+
+        <div>
+            <label>*Model</label>
+            <p>{{form.model}}</p>   
+            {% if form.model.errors %} 
+                {% for error in form.model.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %} 
+        </div>
+
+        <div>
+            <label>*Image</label>
+            <p id="update-pic">{{form.image}}</p>   
+            {% if form.image.errors %} 
+                {% for error in form.image.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %} 
+        </div>
+
+        <div>
+        <label>*Description</label>
+        <p>{{form.description}}</p> 
+        {% if form.description.errors %} 
+            {% for error in form.description.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        <div>
+        <label>*Price</label>
+        <p>{{form.price}}</p> 
+        {% if form.price.errors %} 
+            {% for error in form.price.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %}
+        </div>
+           
+            
+            
+        <div>
+        <label>*Quantity</label>
+        <p>{{form.quantity}}</p>   
+        {% if form.quantity.errors %} 
+            {% for error in form.quantity.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %} 
+        </div>
+       
+        <div>
+        <label>Resolution</label>
+        <p>{{form.resolution}}</p> 
+        {% if form.resolution.errors %} 
+            {% for error in form.resolution.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        <div>
+        <label>Color</label>
+        <p>{{form.color}}</p> 
+        {% if form.color.errors %} 
+            {% for error in form.color.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %}
+        </div>
+            
+            
+            
+        <div>
+        <label>System</label>
+        <p>{{form.system}}</p>   
+        {% if form.system.errors %} 
+            {% for error in form.system.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %} 
+        </div>
+        
+        
+        
+        <div>
+        <label>CPU</label>
+        <p>{{form.cpu}}</p>   
+        {% if form.cpu.errors %} 
+            {% for error in form.cpu.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %} 
+        </div>
+   
+        <div>
+        <label>Weight</label>
+        <p>{{form.weight}}</p>   
+        {% if form.weight.errors %} 
+            {% for error in form.weight.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %} 
+        </div>
+
+
+        <input class="admin-button save-btn" name="button" type="submit" value="save">
+        {% if product %}
+        <input class="admin-button del-btn" name="button" type="submit" value="delete" >
+        {% endif %}
+
+    </form>
+    
+</div>
+</div> 
+{% endblock %}
+

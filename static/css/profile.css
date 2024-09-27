@@ -1,0 +1,46 @@
+.user-container{
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+    background-color:aliceblue;
+    min-height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    align-items: center;
+    
+}
+
+.user-toolbar{
+    padding: 10px;
+}
+
+#user-content{
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-toolbar button{
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+}
+
+.user-toolbar .active-button{
+    background-color: orange;
+    color: black;
+}
+
+#hx-profile-pic{
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+}
+
+.hx-profile a{
+    color: red;
+    
+}

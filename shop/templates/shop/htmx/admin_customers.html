@@ -1,0 +1,48 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/ordered.css' %}">
+
+<div>
+    <p>Total Customer: </p>
+    <p>Customers with Order: </p>
+    <p>Customers without Order: </p>
+
+    <a href="{% url 'add_customer' %}">Add a Customer</a>
+</div>
+<div class="order-container">
+    {% if customers %}
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>N.</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Num.</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{customer.user.username|truncatewords:3}}</td>
+                        <td>{{customer.user.first_name}}</td>
+                        <td>{{customer.user.last_name}}</td>
+                        <td>{{customer.user.email}}</td>
+                        {% if customer.phone %}
+                            <td>{{customer.phone}}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td><a role="button" href="{% url 'update_customer' pk=customer.id %}">Update</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <br>
+        <h6>No Customer Yet.</h6>
+    {% endif %}
+</div>

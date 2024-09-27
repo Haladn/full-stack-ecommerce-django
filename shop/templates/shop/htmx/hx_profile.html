@@ -1,0 +1,23 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+<div class="hx-profile">
+    <img id="hx-profile-pic" src="{{ customer.profile_pic.url}}" >
+    <hr>
+    <p>username: <span>{{customer.user.username|capfirst}}</span></p>
+    {% if customer.user.first_name %} 
+    <p>full name: <span>{{customer.user.first_name|capfirst}}</span> {% if customer.user.last_name %} <span>{{customer.user.last_name|capfirst}}</span> {% endif %}</p>
+    {% endif %}
+
+    <p>email: <span>{{customer.user.email}}</span></p>
+    <a href="{% url 'update_profile' %}">edit profile</a>
+    <hr>
+
+    {% if customer.address.formatted_address %}
+        <p>address: <span>{{customer.address.formatted_address}}</span></p>
+        <a href="{% url "address" %}">edit address</a>
+    {% else %}
+        <p>No address Yet</p>
+        <a href="{% url "address" %}">add an address</a>
+    {% endif %}  
+</div>

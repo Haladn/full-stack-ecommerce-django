@@ -1,0 +1,108 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/address.css' %}">
+{% include 'shop/mynav.html' %}
+
+<div class="address_container">
+    <h5>Address Details</h5>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div id="invalid-message">{{message}}</div><br>
+        {% endfor %}
+    {% endif %}
+
+    <div class="address-form"> 
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div>
+            <label>First name</label> 
+            <P>{{form.first_name}}</P>
+            {% if form.first_name.errors %} 
+            {% for error in form.first_name.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+            {% endif %}
+            </div>
+
+            <div>
+            <label>Last name</label>
+            <p>{{form.last_name}}</p> 
+            {% if form.last_name.errors %} 
+                {% for error in form.last_name.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+           
+            <div>
+            <label>*Country/Region</label>
+            <p id="country">{{form.country}}</p> 
+            {% if form.country.errors %} 
+                {% for error in form.country.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+            
+            <div>
+            <label>*Phone Number</label>
+            <p class="phone-number">{{form.phone_number}}</p> 
+            {% if form.phone_number.errors %} 
+                {% for error in form.phone_number.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+            
+            <div>
+            <label>Apartment, building, etc.</label>
+            <p>{{form.building_name}}</p>   
+            {% if form.building_name.errors %} 
+                {% for error in form.building_name.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %} 
+            </div>
+        
+            <div>
+            <label>*Street, Address</label>
+            <p>{{form.addressline}}</p> 
+            {% if form.addressline.errors %}
+                {% for error in form.addressline.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}   
+            </div>
+    
+            <div>
+            <label>*City/Town</label>
+            <p>{{form.city}}</p>
+            {% if form.city.errors %}
+                {% for error in form.city.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+            
+            <div>
+            <label>*Postcode</label>
+            <p>{{form.postal_code}}</p>
+            {% if form.postal_code.errors %}
+                {% for error in form.postal_code.errors %}
+                    <i class="error-message">*{{error}}</i>
+                {% endfor %}
+            {% endif %}
+            </div>
+            
+            <button class="ad-button1" type="submit">Submit</button>
+        </form>
+        
+    </div> 
+</div>
+
+{% endblock %}

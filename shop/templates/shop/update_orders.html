@@ -1,0 +1,80 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content  %}
+{% include 'shop/mynav.html' %}
+
+
+<link rel="stylesheet" href="{% static 'css/address.css' %}">
+<link rel="stylesheet" href="{% static 'css/update_product.css' %}">
+
+
+<div class="address_container">
+<div class="address-form"> 
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div>
+        <label>Customer</label> 
+        <P>{{form.customer}}</P>
+        {% if form.customer.errors %} 
+        {% for error in form.customer.errors %}
+            <i class="error-message">*{{error}}</i>
+        {% endfor %}
+        {% endif %}
+        </div>
+
+        <div>
+        <label>Product</label>
+        <p>{{form.laptop}}</p> 
+        {% if form.last_name.errors %} 
+            {% for error in form.laptop.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        <div>
+        <label>Total Price</label>
+        <p>{{form.total_price}}</p> 
+        {% if form.total_price.errors %} 
+            {% for error in form.total_price.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %}
+        </div>
+           
+            
+            
+        <div>
+        <label>Quantity</label>
+        <p>{{form.quantity}}</p>   
+        {% if form.quantity.errors %} 
+            {% for error in form.quantity.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %} 
+        </div>
+       
+        
+        
+        <div>
+        <label>Status</label>
+        <p>{{form.status}}</p>   
+        {% if form.status.errors %} 
+            {% for error in form.status.errors %}
+                <i class="error-message">*{{error}}</i>
+            {% endfor %}
+        {% endif %} 
+        </div>
+
+        <input class="admin-button save-btn" name="button" type="submit" value="save">
+        {% if order %}
+        <input class="admin-button del-btn" name="button" type="submit" value="delete" >
+        {% endif %}
+    </form>
+    
+</div>
+</div> 
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/ordered.css' %}">
+
+<p>Total Products: {{total_products}}</p>
+<p>Total Products in Stock: {{in_stock}}</p>
+<p>Total Products Out of Stock: {{out_of_stock}}</p>
+
+<a href="{% url 'update_product' %}">Add a Product</a>
+<div class="order-container">
+    {% if laptops %}
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>N.</th>
+                    <th>Product</th>
+                    <th>Quan.</th>
+                    <th>Price</th>
+                    <th>Model</th>
+                    <th>Resolution</th>
+                    <th>Color</th>
+                    <th>System</th>
+                    <th>CPU</th>
+                    <th>Weight</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for laptop in laptops %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{laptop.description|truncatewords:3}}</td>
+                        <td>{{laptop.quantity}}</td>
+                        <td>£ {{laptop.price|floatformat:"g"}}</td>
+                        <td>{{laptop.model}}</td>
+                        <td>{{laptop.resolution}}</td>
+                        <td>{{laptop.color}}</td>
+                        <td>{{laptop.system}}</td>
+                        <td>{{laptop.cpu}}</td>
+                        <td>{{laptop.weight}}</td>
+                        <td><a role="button" href="{% url 'update_product_params' pk=laptop.id %}">Update</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <br>
+        <h6>No Product Yet.</h6>
+    {% endif %}
+</div>

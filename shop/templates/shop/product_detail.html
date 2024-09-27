@@ -1,0 +1,137 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+{% include "shop/mynav.html" %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
+
+{% if request.user.is_authenticated %}
+<div class="main-container">
+    <div class="inner-container">
+        <div class="image">
+            <img src="{{object.image}}">
+        </div>
+        <div class="body">
+            <strong>{{object.category}}</strong>
+            <br>
+            <br>
+            
+            <p>{{object.description|lower|title}}</p>
+            
+            {% if object.model %}
+            <p>{{object.model}}</p>
+            {% endif %}
+
+            {% if object.resolution %}
+                <p>{{object.resolution}}</p>
+            {% endif %} 
+            
+            {% if object.system %}
+                <p>{{object.system}}</p>
+            {% endif %} 
+
+            {% if object.color %}
+                <p>{{object.color}}</p>
+            {% endif %}
+            
+            {% if object.cpu %}
+                <p>{{object.cpu}}</p>
+            {% endif %}
+            
+            {% if object.weight %}
+                <p>{{object.weight}}</p>
+            {% endif %}    
+            <p >price: £{{object.price}}</p>
+        
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="number" name="object_id" value={{object.id}} readonly hidden>
+
+                {% if object.quantity and object.quantity > 0 %}
+                
+                    <div hx-get="{% url 'hx_quantity_range' object.id %}" hx-trigger="load"></div>
+                    <span><button type="submit" name="button" value="add-to-cart">Add to Cart</button></span>
+                    <button id="detail-button" type="submit" name="button" value="checkout">Buy now</button>
+                {% else %}
+                <p id="stock">Out of stock</p>
+                <p>quantity:<select>
+                    <option value="0">0</option>
+                </select></p>
+                {% endif %}    
+            </form> 
+        </div>
+    </div>
+</div>
+
+
+{% else %}
+<div class="main-container">
+    <div class="inner-container">
+        <div class="image">
+            <img src="{{object.image}}">
+        </div>
+        <div class="body">
+            <strong>{{object.category}}</strong>
+            <br>
+            <br>
+            
+            <p>{{object.description|lower|title}}</p>
+            
+            {% if object.model %}
+            <p>{{object.model}}</p>
+            {% endif %}
+
+            {% if object.resolution %}
+                <p>{{object.resolution}}</p>
+            {% endif %} 
+            
+            {% if object.system %}
+                <p>{{object.system}}</p>
+            {% endif %} 
+
+            {% if object.color %}
+                <p>{{object.color}}</p>
+            {% endif %}
+            
+            {% if object.cpu %}
+                <p>{{object.cpu}}</p>
+            {% endif %}
+            
+            {% if object.weight %}
+                <p>{{object.weight}}</p>
+            {% endif %}    
+            <p >price: £{{object.price}}</p>
+        
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="number" name="object_id" value={{object.id}} readonly hidden>
+
+                {% if object.quantity and object.quantity > 0 %}
+                
+                    <div hx-get="{% url 'hx_quantity_range' object.id %}" hx-trigger="load"></div>
+                    <span><button type="submit" name="button" value="add-to-cart">
+                        Add to Cart</button></span>
+                    <button id="detail-button" type="submit" name="button" value="checkout">Buy now</button>
+                {% else %}
+                    <p id="stock">Out of stock</p>
+                    <p>quantity:<select>
+                        <option value="0">0</option>
+                    </select></p>
+                {% endif %}    
+            </form>
+            
+            
+        </div>
+    </div>
+</div>
+
+{% endif %}
+    
+
+{% endblock %}
+
+

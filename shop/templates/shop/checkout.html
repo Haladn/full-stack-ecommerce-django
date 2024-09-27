@@ -1,0 +1,173 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'shop/mynav.html' %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AWzyxGfQB08j7HrCWxWdQWVLuGBc8nzN9KFDLrAYgBnMM63BKpM6DLD7hL4jwOEj11HIwQ_mBZQ_HiT1&currency=GBP"> // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.
+</script>
+
+<script>
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+</script>
+
+<div class="Checkout-container">
+{% if product %}
+  
+    <strong>Your order's details</strong>
+    <div class="checkout-product">
+      <p class="underline">Product detail</p>
+      <img class="chekout-img checkout-bottom" src="{{product.laptop.image}}">
+      <p>quantity:&nbsp;&nbsp;{{product.quantity}}</p>
+      <p|>total price:&nbsp;&nbsp;£ <span id="checkout-product-price">{{total_price|floatformat:"2g"}}</span></p>
+      <a class="checkout-edit" type="line" href="{% url 'cart' %}">edit</a>
+      <hr>
+      <p class="underline">Your address</p>
+      <p> {{address.formatted_address}}</p>
+      <a class="checkout-edit" type="line" href="{% url 'address_params' pk=product.laptop.id quantity=product.quantity %}">edit</a>
+    </div>
+    <p class="underline">Payment Method</p>
+
+
+
+  <script>
+    //defining variables to a single product
+    
+    //getting total price,product id and product quantity
+    var totalPrice = "{{total_price}}";
+    const productId = "{{product.laptop.id}}";
+    const quantity = "{{product.quantity}}";
+    console.log("totalPrive:",totalPrice,"productId:",productId,"quantity:",quantity);
+    //sending empty post request
+    function completeOrder(){
+      var url="{% url 'payment_params' product.laptop.id product.quantity %}"
+      fetch(url,{
+        method:'POST',
+        headers:{
+          'Content-type':'application/json',
+          'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({
+          "total_price":totalPrice,
+          "product_id": productId,
+          "quantity":quantity,
+          })
+      })
+    }
+    </script>
+
+      
+
+{% else %}
+
+    <strong>Your order's details</strong>
+    <div class="checkout-product">
+      <p class="underline">Product detail</p>
+      
+      <div id="checkout-subtotal">
+        {% for product in products %}
+          <div>
+            <img class="chekout-img" src="{{product.laptop.image}}">
+            
+          </div>
+        {% endfor %}
+      </div>
+
+      <p>subtotal:&nbsp;&nbsp;{{subtotal}}</p>
+      <p|>total price:&nbsp;&nbsp;£ {{total_price|floatformat:"2g"}}</p>
+      <a class="checkout-edit" type="line" href="{% url 'cart' %}">edit</a>
+      <hr>
+      <p class="underline">Your address</p>
+      <p> {{address.formatted_address}}</p>
+      <a class="checkout-edit" type="line" href="{% url 'address' %}">edit</a>
+    </div>
+    <p class="underline">Payment Method</p>
+    
+
+
+  
+<script>
+  //defining variables to subtotal
+
+  //getting total price,product id and product quantity
+  var totalPrice = "{{total_price}}";
+  
+  //sending empty post request
+  function completeOrder(){
+    var url="{% url 'payment' %}"
+    fetch(url,{
+      method:'POST',
+      headers:{
+        'Content-type':'application/json',
+        'X-CSRFToken':csrftoken,
+      },
+      body:JSON.stringify({
+        "total_price":totalPrice,
+        })
+    })
+  };
+  </script>
+
+{% endif %}
+
+<div id="paypal-button-container"></div>
+<a class="check-link" type="line" href="{% url 'cart' %}">Cancel Order</a>
+
+  <script>
+  //defining url to return after transaction
+  const orderedtUrl='{% url "profile" %}';
+
+  //render the paypal button to #paypal-button-container
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      // This function sets up the details of the transaction, including the amount and line item details.
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: totalPrice
+          }
+        }]
+      });
+    },
+
+    //finalize the transaction
+    onApprove: function(data, actions) {
+      // This function captures the funds from the transaction.
+      return actions.order.capture().then(function(details) {
+        // This function shows a transaction success message to your buyer.
+
+        // calling our completeOrder function to send the data to backend
+
+        completeOrder();
+
+        alert('Transaction completed by ' + details.payer.name.given_name);
+        
+        // redirect to cart after successfull payment
+        window.location.href = orderedtUrl;
+      });
+     
+    }
+  }).render('#paypal-button-container');
+  //This function displays Smart Payment Buttons on your web page.
+</script>
+
+</div>
+
+{% endblock %}

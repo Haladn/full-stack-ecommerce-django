@@ -1,0 +1,76 @@
+{% extends 'shop/index.html' %}
+{% load static %}
+
+{% block content  %}
+{% include 'shop/mynav.html' %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/ordered.css' %}">
+
+<style>
+    .active-button{
+    background-color: orange;
+    color: black;
+}
+</style>
+
+<div class="user-container">
+    <div class="user-toolbar">
+        <button class="profile-button" id="user-profile-button" hx-get="{% url 'hx_profile' %}" hx-trigger="click load" hx-target="#user-content" hx-swap="innerHTML">Profile</button>
+        <button class="profile-button " id="order-button" hx-get="{% url 'ordered' %}" hx-trigger="click load" hx-target="#user-content" hx-swap="innerHTML">Order</button>
+        <hr>
+    </div>
+
+    <div id="user-content">
+    </div>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let buttons = document.querySelectorAll(".profile-button");
+        // defining referrer page
+        let referringPage = document.referrer;
+
+        buttons.forEach(function (button) {
+            buttons.forEach(function(otherButton){
+                    otherButton.classList.remove('active-button');
+                    console.log('otherbutton:',otherButton,'--------------------------')
+                });
+            console.log('currentbutton:',button,'--------------------------')
+            if(referringPage && referringPage.includes('checkout') && button.id === "order-button"){
+                    button.click();
+                    button.classList.add('active-button');
+                    
+            } 
+            else{
+                let profileButton = document.getElementById('user-profile-button');
+                    profileButton.click();
+                    profileButton.classList.add('active-button');
+                    
+                }
+            });
+});
+
+</script>
+
+<script>
+    let buttons = document.querySelectorAll(".profile-button");
+
+    buttons.forEach(function (button) {
+        button.addEventListener('click',function(){
+            buttons.forEach(function(otherButton){
+                otherButton.classList.remove('active-button');
+                console.log('otherbutton:',otherButton,'--------------------------')
+            });
+            console.log('currentbutton:',button,'--------------------------')
+            button.classList.add('active-button');
+
+        });
+    });
+
+
+</script>
+
+{% endblock %}
+
+
+
